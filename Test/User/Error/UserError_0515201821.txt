@@ -1,0 +1,5 @@
+Error for User: Punit1.@Hindustan Fertilizers.com7. Message :BranchId is missing, City is missing, Mobile phone is missing, License Number and License Class is required, Experience and MonthlyWage is required.
+Date :15/05/2018 21:44:19
+
+-----------------------------------------------------------------------------
+

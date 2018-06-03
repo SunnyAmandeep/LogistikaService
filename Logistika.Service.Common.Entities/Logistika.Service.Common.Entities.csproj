@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4571BD8-A084-4DF6-AF82-4E9F502E13EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Logistika.Service.Common.Entities</RootNamespace>
+    <AssemblyName>Logistika.Service.Common.Entities</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AOC\AocResponse.cs" />
+    <Compile Include="AOC\AocResponseLineItem.cs" />
+    <Compile Include="AOC\AOC_RESPONSE_MOBILE_QUEUE.cs" />
+    <Compile Include="AOC\AocResponseModification.cs" />
+    <Compile Include="AOC\AocResponseModificationType.cs" />
+    <Compile Include="AOC\AocResponseQna.cs" />
+    <Compile Include="AOC\AOC_RESPONSE_QUEUE.cs" />
+    <Compile Include="AOC\AocResponseStatusHistory.cs" />
+    <Compile Include="AOC\AOC_RESPONSE_STATUS_REASON.cs" />
+    <Compile Include="AOC\AOC_RESPONSE_STATUS_REASON_TYPE.cs" />
+    <Compile Include="AOC\CLIENT.cs" />
+    <Compile Include="AOC\COLUMNS_METADATA.cs" />
+    <Compile Include="AOC\DATA_TYPE.cs" />
+    <Compile Include="AOC\DIVISION.cs" />
+    <Compile Include="AOC\FRAMEWORK_DATABASE.cs" />
+    <Compile Include="AOC\FRAMEWORK_DATABASE_CLIENT_TYPE.cs" />
+    <Compile Include="AOC\FRAMEWORK_STORED_PROCEDURE.cs" />
+    <Compile Include="AOC\FRAMEWORK_STORED_PROCEDURE_CLIENT.cs" />
+    <Compile Include="AOC\FRAMEWORK_STORED_PROCEDURE_FIELD.cs" />
+    <Compile Include="AOC\FRAMEWORK_STORED_PROCEDURE_TYPE.cs" />
+    <Compile Include="AOC\FRAMEWORK_SYSTEM_TYPE.cs" />
+    <Compile Include="AOC\FRAMEWORK_URL.cs" />
+    <Compile Include="AOC\FRAMEWORK_URL_TYPE.cs" />
+    <Compile Include="AOC\ILS_REPLICATION_TABLE_NAMES.cs" />
+    <Compile Include="AOC\JOB.cs" />
+    <Compile Include="AOC\LKWPROD_AOC_REPLICATION_DETAILS.cs" />
+    <Compile Include="AOC\OFFER.cs" />
+    <Compile Include="AOC\OMS_MAPPING.cs" />
+    <Compile Include="AOC\ORDER_HEADER.cs" />
+    <Compile Include="AOC\ORDER_SHIPMENT_HEADER.cs" />
+    <Compile Include="AOC\PAGE.cs" />
+    <Compile Include="AOC\ProdILS_WCH_AR_UPLOAD_ORDER_HEADER.cs" />
+    <Compile Include="AOC\PROGRAM_TYPE.cs" />
+    <Compile Include="AOC\PROJECT.cs" />
+    <Compile Include="AOC\QNA_ANSWER.cs" />
+    <Compile Include="AOC\QNA_QUESTION.cs" />
+    <Compile Include="AOC\QNA_QUESTION_SET.cs" />
+    <Compile Include="AOC\QNA_QUESTION_SET_JOB.cs" />
+    <Compile Include="AOC\QNA_QUESTION_SET_TYPE.cs" />
+    <Compile Include="AOC\SearchEntity\AOCPickSlipLineItem.cs" />
+    <Compile Include="AOC\SearchEntity\AOCResponse.cs" />
+    <Compile Include="AOC\SearchEntity\AOCResponseSearchParameter.cs" />
+    <Compile Include="AOC\SearchEntity\QNA.cs" />
+    <Compile Include="AOC\SIGNED_BY_TYPE.cs" />
+    <Compile Include="AOC\STATE.cs" />
+    <Compile Include="AOC\STATUS.cs" />
+    <Compile Include="AOC\SYSTEM_CONFIGURATION.cs" />
+    <Compile Include="AOC\SYSTEM_ERROR_LOG.cs" />
+    <Compile Include="AOC\WMS_COMPANY_TAB.cs" />
+    <Compile Include="AOC\WMS_DELIVERY_CONTAINER_TAB.cs" />
+    <Compile Include="AOC\WMS_DELIVERY_SHIPMENT_HDR_TAB.cs" />
+    <Compile Include="AOC\WMS_ITEM_TAB.cs" />
+    <Compile Include="AOC\WMS_LOT_TAB.cs" />
+    <Compile Include="AOC\WMS_SHIPMENT_HEADER_TAB.cs" />
+    <Compile Include="AOC\WMS_SHIPPING_CONTAINER_TAB.cs" />
+    <Compile Include="AOC\WMS_UPLOAD_ORDER_CONTAINER_TAB.cs" />
+    <Compile Include="AOC\WMS_UPLOAD_ORDER_HEADER_TAB.cs" />
+    <Compile Include="Authentication\ApplicationUser.cs" />
+    <Compile Include="Authentication\Client.cs" />
+    <Compile Include="Authentication\Enums.cs" />
+    <Compile Include="Authentication\RefreshToken.cs" />
+    <Compile Include="AuthUser.cs" />
+    <Compile Include="BaseObject.cs" />
+    <Compile Include="Client\Questcor\MallinckrodtLiquidhubRestockData.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="CompanyList.cs" />
+    <Compile Include="CompanySubscription.cs" />
+    <Compile Include="Config\SystemConfig.cs" />
+    <Compile Include="Country.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="DocumentType.cs" />
+    <Compile Include="DriverMetrics.cs" />
+    <Compile Include="EmployeePlanner.cs" />
+    <Compile Include="ExpenseLog.cs" />
+    <Compile Include="FileExDetails.cs" />
+    <Compile Include="FileImport.cs" />
+    <Compile Include="Fleet.cs" />
+    <Compile Include="ForgotUserPassword.cs" />
+    <Compile Include="GeoLocation.cs" />
+    <Compile Include="Inquiry.cs" />
+    <Compile Include="ItemList.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Data\DataSyncer.cs" />
+    <Compile Include="Data\Table.cs" />
+    <Compile Include="DeliveryRep.cs" />
+    <Compile Include="ErrorLog\DataEntryTimeLog.cs" />
+    <Compile Include="ErrorLog\AppError.cs" />
+    <Compile Include="FrameworkUser.cs" />
+    <Compile Include="Holiday.cs" />
+    <Compile Include="Client\Teva\ZipToTerritory.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="CorsConfig\SystemConfiguration.cs" />
+    <Compile Include="Enum\PageModeEnum.cs" />
+    <Compile Include="Enum\ErrorCode.cs" />
+    <Compile Include="Enum\SortDirectionEnum.cs" />
+    <Compile Include="ErrorLog\SystemErrorLog.cs" />
+    <Compile Include="ErrorLog\WebServiceLog.cs" />
+    <Compile Include="Authentication\WsApiController.cs" />
+    <Compile Include="CorsConfig\WsApiCorsConfig.cs" />
+    <Compile Include="Authentication\WsConsumer.cs" />
+    <Compile Include="Authentication\WsCredential.cs" />
+    <Compile Include="Authentication\WsCredentialApiController.cs" />
+    <Compile Include="CorsConfig\CorsConfig.cs" />
+    <Compile Include="ExclusionList\HcpExclusionList.cs" />
+    <Compile Include="Address.cs" />
+    <Compile Include="HealthCareEntityAddress.cs" />
+    <Compile Include="Logger\AuditLog.cs" />
+    <Compile Include="Menu\Lookup\DropdownData.cs" />
+    <Compile Include="Menu\Lookup\Search\SearchParameter.cs" />
+    <Compile Include="Menu\Lookup\SignatureVerficationQuestionType.cs" />
+    <Compile Include="MenuBar.cs" />
+    <Compile Include="Menu\GroupUser.cs" />
+    <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="KfisUser.cs" />
+    <Compile Include="OrderDetail.cs" />
+    <Compile Include="OrderDriverInfo.cs" />
+    <Compile Include="LogistikaOrderHeader.cs" />
+    <Compile Include="LogistikaOrderLineItem.cs" />
+    <Compile Include="OrderQuote.cs" />
+    <Compile Include="OrderStats.cs" />
+    <Compile Include="OrderStatsByArea.cs" />
+    <Compile Include="OrderUpdate.cs" />
+    <Compile Include="Payment.cs" />
+    <Compile Include="Practitioners\PractitionerPreference.cs" />
+    <Compile Include="Order\ExportSourceStatusMapping.cs" />
+    <Compile Include="Order\ExportSourceStatusReasonMapping.cs" />
+    <Compile Include="Order\OrderHeader.cs" />
+    <Compile Include="Order\OrderLineItem.cs" />
+    <Compile Include="Order\OrdershipmentContainerHeader.cs" />
+    <Compile Include="Order\OrderShipmentHeader.cs" />
+    <Compile Include="Order\OrderShipmentItem.cs" />
+    <Compile Include="Order\StatusInformation.cs" />
+    <Compile Include="Order\StatusReason.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Practitioner.cs" />
+    <Compile Include="Practitioners\WsSlnValidation.cs" />
+    <Compile Include="Product.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SalesRepresentative.cs" />
+    <Compile Include="SecurityQuestions.cs" />
+    <Compile Include="StatusList.cs" />
+    <Compile Include="SubscriptionPlans.cs" />
+    <Compile Include="SvlAoc\AOCPickSlipLineItem.cs" />
+    <Compile Include="SvlAoc\SvlAocSRF.cs" />
+    <Compile Include="SvlAoc\SvlAocSRFQNA.cs" />
+    <Compile Include="UserStats.cs" />
+    <Compile Include="WaveAvailableOrders.cs" />
+    <Compile Include="WavedOrders.cs" />
+    <Compile Include="WaveFleet.cs" />
+    <Compile Include="WaveModal.cs" />
+    <Compile Include="WavePlanner.cs" />
+    <Compile Include="WebApiResponse\ErrorResponse.cs" />
+    <Compile Include="WebApiResponse\RequestResponseResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Client\Genentech\" />
+    <Folder Include="Validation\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AOC\AOC.cd" />
+    <None Include="Order\OrderCD.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

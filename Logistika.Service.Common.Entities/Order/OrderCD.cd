@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Logistika.Service.Common.Entities.Order.OrderHeader" Collapsed="true">
+    <Position X="7" Y="2.75" Width="2" />
+    <AssociationLine Name="OrderHeaderStatuses" Type="Logistika.Service.Common.Entities.Order.Status" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.344" Y="3.312" />
+        <Point X="7.344" Y="8.594" />
+        <Point X="5.75" Y="8.594" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SalesRepresentative" Type="Logistika.Service.Common.Entities.SalesRepresentative" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.438" Y="2.75" />
+        <Point X="7.438" Y="1.75" />
+        <Point X="6.75" Y="1.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAhAAAIAACAAAAAEQAIIACKAQAFgAAAAA=</HashCode>
+      <FileName>Order\OrderHeader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Practitioner" />
+      <Property Name="SalesRepresentative" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="LineItems" />
+      <Property Name="OrderHeaderStatuses" />
+      <Property Name="OrderShipmentHeaders" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Order.OrderLineItem">
+    <Position X="7.75" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAEAAAAAAAAAAABAAQAACAACAAAIAAAIQA=</HashCode>
+      <FileName>Order\OrderLineItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ShipmentHeaders" />
+      <Property Name="LineItemStatuses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Order.OrdershipmentContainerHeader">
+    <Position X="12.25" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAIAAAAEAAAAAAAEAAAAQAoAAAAAAAAAAAAA=</HashCode>
+      <FileName>Order\OrdershipmentContainerHeader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ShipmentItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Order.OrderShipmentHeader" Collapsed="true">
+    <Position X="10.75" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAQAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Order\OrderShipmentHeader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ShipmentContainers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Order.OrderShipmentItem">
+    <Position X="9.75" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQEAAAAAAAEAAAAAAAEAAAAAAgAAAAAIAgAAAAA=</HashCode>
+      <FileName>Order\OrderShipmentItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Order.Status" Collapsed="true">
+    <Position X="4.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgAMABAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Order\StatusInformation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="StatusReasons" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Order.StatusReason" Collapsed="true">
+    <Position X="4" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Order\StatusReason.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.SalesRepresentative">
+    <Position X="4.5" Y="0.5" Width="2.25" />
+    <AssociationLine Name="Address" Type="Logistika.Service.Common.Entities.HealthCareEntityAddress" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="2.375" />
+        <Point X="4.125" Y="2.375" />
+        <Point X="4.125" Y="3.438" />
+        <Point X="3" Y="3.438" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AACEAAAAAAAAAAAACAAAAAAAAAABAAADSAAAQAAAAAA=</HashCode>
+      <FileName>SalesRepresentative.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Practitioner" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAACAgAAACAAAAAAAAA=</HashCode>
+      <FileName>Practitioner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Person" Collapsed="true">
+    <Position X="4" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAMAEAAAQAAAAAAAAAAAAACAAAAAAAAg=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.HealthCareEntityAddress" Collapsed="true">
+    <Position X="1" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAgAACAAAAAAIAAAAACAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>HealthCareEntityAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logistika.Service.Common.Entities.Address" Collapsed="true">
+    <Position X="1.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAIAAAACAAAAAIAAAAEAAAABAQQAAA=</HashCode>
+      <FileName>Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

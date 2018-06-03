@@ -1,0 +1,610 @@
+using Logistika.Service.Common.DataAccessInterface.User;
+using Logistika.Service.Common.EFDataContext;
+using Logistika.Service.Common.Entities;
+using Logistika.Service.Common.Entities.Menu;
+using Logistika.Service.Common.Extension;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Linq;
+namespace Logistika.Service.Common.DataAccess.User
+{
+    public class UserDataAccess : BaseDataAccess, IUserDataAccess
+    {
+        public IList<string> GetUserRoles(string UserId)
+        {
+            return new string[] { "Role1", "Role12", "Role13" };
+            IList<string> roles = null;
+            Func<DbDataReader, IList<String>> func = (reader) =>
+            {
+                return (from IDataRecord x in reader select Convert.ToString(x[""])).ToList<string>();
+            };
+
+            roles = GetList1<string>(func, null, "[dbo].[]",
+             new SqlParameter("UserId", UserId)
+             , OutputParameter
+            );
+            return roles;
+
+        }
+
+        // Framework User get_Method
+        public IList<FrameworkUser> getUserList(string UserName)
+        {
+            return GetList<FrameworkUser>("[dbo].[proc_FrameworkUserList]",
+                   new SqlParameter("UserName", UserName)
+                );
+        }
+
+        //  get_Item List
+        public IList<ItemList> getItemList(string Type)
+        {
+            return GetList<ItemList>("[dbo].[proc_get_ItemList]",
+                   new SqlParameter("Type", Type)
+                );
+        }
+
+        // Company Address List get_Method
+        public IList<Address> getFrameAddress(int FramewordAddressID)
+        {
+            var ds = GetDataSetResult("[dbo].[proc_FrameworkAddressList]",
+                   new SqlParameter("FrameworkAddressID", FramewordAddressID)
+                );
+
+            return BindAddress(ds);
+        }
+        public IList<Address> BindAddress(DataSet Data, int index = 0)
+        {
+            if (!Data.IsDataSetNotNullAndTableHasRows(index))
+            {
+                return (IList<Address>)null;
+            }
+            return Data.Tables[index].DataTableToCollectionType<Address>();
+        }
+
+        // Company Address List get_Method
+        public IList<CompanyAddress> getCompanyAddressList(int CompanyID, int FrameworkAddressID)
+        {
+            IList<CompanyAddress> AddressList = null;
+            var ds = GetDataSetResult("[dbo].[proc_Get_Company_Address]",
+                   new SqlParameter("CompanyID", CompanyID),
+                   new SqlParameter("FrameworkAddressID", FrameworkAddressID)
+                );
+
+            AddressList = (from row in ds.Tables[0].AsEnumerable()
+                           select new Entities.CompanyAddress
+                        {
+                            CompanyID = Convert.ToInt32(row["CompanyID"].CheckDBNull()),
+                            CompanyName = Convert.ToString(row["CompanyName"].CheckDBNull()),
+                            IsCompanyActive = Convert.ToInt32(row["IsCompanyActive"].CheckDBNull()),
+                            FrameworkAddressID = Convert.ToInt32(row["FrameworkAddressID"].CheckDBNull()),
+                            LandMark = Convert.ToString(row["LandMark"].CheckDBNull()),
+                            AddressLine1 = Convert.ToString(row["AddressLine1"].CheckDBNull()),
+                            Locality = Convert.ToString(row["Locality"].CheckDBNull()),
+                            Suite = Convert.ToString(row["Suite"].CheckDBNull()),
+                            City = Convert.ToString(row["City"].CheckDBNull()),
+                            District = Convert.ToString(row["District"].CheckDBNull()),
+                            StateCode = Convert.ToString(row["StateCode"].CheckDBNull()),
+                            PostalCode = Convert.ToString(row["PostalCode"].CheckDBNull()),
+                            CountryCode = Convert.ToString(row["CountryCode"].CheckDBNull()),
+                            IsCompanyAddressActive = Convert.ToInt32(row["IsCompanyAddressActive"].CheckDBNull())
+
+                        }).ToList();
+
+
+
+            return AddressList;
+        }
+
+        // Fleet Master List get_Method
+        public IList<Fleet> getFleetMaster(string Make, string Model)
+        {
+            IList<Fleet> FleetList = null;
+            var ds = GetDataSetResult("[dbo].[proc_get_FleetMaster]",
+                   new SqlParameter("Make", Make),
+                   new SqlParameter("Model", Model)
+                );
+
+            FleetList = (from row in ds.Tables[0].AsEnumerable()
+                           select new Entities.Fleet
+                           {
+                               FleetMasterID = Convert.ToInt32(row["FleetMaster_PK"].CheckDBNull()),
+                               Make = Convert.ToString(row["Make"].CheckDBNull()),
+                               Model = Convert.ToString(row["Model"].CheckDBNull()),
+                               OverallLength = Convert.ToString(row["OverallLength"].CheckDBNull()),
+                               OverallWidth = Convert.ToString(row["OverallWidth"].CheckDBNull()),
+                               OverallHeight = Convert.ToString(row["OverallHeight"].CheckDBNull()),
+                               Payload = Convert.ToString(row["Capacity"].CheckDBNull()),
+                           }).ToList();
+            return FleetList;
+        }
+
+
+
+        //Employee Planner
+        public IList<EmployeePlanner> GetEmployeePlannerList(int CompanyID, int CompanyAddressID,string LastModifiedBy, char Operation)
+        {
+            IList<EmployeePlanner> EmployeePlannerList = null;
+            var ds = GetDataSetResult("[dbo].[proc_ins_upd_EmployeePlannerList]",
+                   new SqlParameter("CompanyID", CompanyID),
+                   new SqlParameter("CompanyAddressID", CompanyAddressID),
+                   new SqlParameter("LastModifiedBy", LastModifiedBy),
+                   new SqlParameter("Operation", Operation)
+
+                );
+            EmployeePlannerList = (from row in ds.Tables[0].AsEnumerable()
+                                select new Entities.EmployeePlanner
+                                {
+                                    WeekDate = Convert.ToDateTime(row["WeekDate"].CheckDBNull()),
+                                    TotalDrivers = Convert.ToInt32(row["TotalDrivers"].CheckDBNull()),
+                                    PlanningStartDate = Convert.ToDateTime(row["PlanningStartDate"].CheckDBNull()),
+                                    PlanningEndDate = Convert.ToDateTime(row["PlanningEndDate"].CheckDBNull()),
+                                }).ToList();
+            return EmployeePlannerList;
+        }
+
+
+        // Company Add or Update
+        public string AddUpdateCompany(string CompanyName, string TaxIdentification, int IsActive, string AuthCode)
+        {
+            // IList<Company> Company = null;
+            var ds = GetDataSetResult("[dbo].[proc_ins_upd_Company]",
+                   new SqlParameter("CompanyName", CompanyName),
+                   new SqlParameter("TaxIdentification", TaxIdentification),
+                   new SqlParameter("IsActive", IsActive),
+                   new SqlParameter("AuthCode", AuthCode)
+                );
+            //if (ds.IsDataSetNotNullAndTableHasRows())
+            //{
+            //    Company = (from row in ds.Tables[0].AsEnumerable()
+            //               select new Entities.Company
+            //               {
+            //                   CompanyName = Convert.ToString(row["CompanyName"].CheckDBNull()),
+            //                   TaxIdentification = Convert.ToString(row["TaxIdentification"].CheckDBNull()),
+            //                   IsActive = Convert.ToInt32(row["IsActive"].CheckDBNull()),
+            //                   AuthCode = Convert.ToString(row["AuthCode"].CheckDBNull())
+            //               }).ToList();
+            //}
+            return CompanyName;
+        }
+
+        // Fleet and Document History
+        public string InsUpdFleetinfo(Fleet myFleet)
+        {
+            var Fleet_PK = GetOutputParameter("Fleet_PK", ParameterDirection.InputOutput);
+            var ds = GetDataSetResult("[dbo].[proc_ins_upd_FleetInformation]",
+                   new SqlParameter("CompanyAddressID", myFleet.CompanyAddressID),
+                   new SqlParameter("FleetMasterID", myFleet.FleetMasterID),
+                   new SqlParameter("Make", myFleet.Make),
+                   new SqlParameter("Model", myFleet.Model),
+                   new SqlParameter("OverallLength", myFleet.OverallLength),
+                   new SqlParameter("OverallWidth", myFleet.OverallWidth),
+                   new SqlParameter("OverallHeight", myFleet.OverallHeight),
+                   new SqlParameter("Payload", myFleet.Payload),
+                   new SqlParameter("Colour", myFleet.Colour),
+                   new SqlParameter("ModelYear", myFleet.ModelYear),
+                   new SqlParameter("OwnerShipType", myFleet.OwnerShipType),
+                   new SqlParameter("StartingMileage", myFleet.StartingMileage),
+                   new SqlParameter("FleetID", myFleet.FleetID),
+                   new SqlParameter("LastModifiedBy", myFleet.LastModifiedBy),
+                   Fleet_PK);
+
+            var Alldocoments = from b in myFleet.fleetDocument select b;
+            foreach (Document document in Alldocoments)
+            {
+                var documentdataset = GetDataSetResult("[dbo].[proc_ins_upd_DocumentHistory]",
+                        new SqlParameter("Fleet_PK", Fleet_PK.Value),
+                        new SqlParameter("DocumentType", document.DocumentType),
+                        new SqlParameter("IssuedDate", document.IssuedDate),
+                        new SqlParameter("IssuedState", document.IssuedState),
+                        new SqlParameter("ExpirationDate", document.ExpirationDate),
+                        new SqlParameter("DocumentNumber", document.DocumentNumber),
+                        new SqlParameter("DocumentName", document.DocumentName),
+                        new SqlParameter("Url", document.Url),
+                        new SqlParameter("IsActive", document.IsActive),
+                        new SqlParameter("LastModifiedBy", document.LastModifiedBy));
+            }
+
+            return "Success";
+        }
+        // Login User Authorization
+        public void AuditLogin(string UserName)
+        {
+            Exec("[dbo].[proc_ins_AuditLogin]",
+                   new SqlParameter("UserName", UserName)
+                );
+        }
+
+        // Framework User success update
+        public string SaveFrameworkUser(string UserName, string Password, string FirstName, string MiddleName, string LastName, string PrimaryEmail, string PrimaryPhone, string PrimaryFax, int FrameworkApplicationUserType_FK, int Company_FK, IList<Address> myAddress)
+        {
+            int addressId = 0;
+            //myAddress = new Address();
+            //myAddress.LandMark = "test";
+            //myAddress.AddressLine1 = "test";
+            //myAddress.Locality = "test";
+            //myAddress.City = "test";
+            //myAddress.District = "test";
+            //myAddress.StateCode = "test";
+            //myAddress.PostalCode = "test";
+            //myAddress.CountryCode = "test";
+            //myAddress.Suite = "test";
+
+            if (myAddress != null)
+            {
+                DataSet ds = GetDataSetResult("dbo.proc_ins_FrameworkAddress",
+                new SqlParameter("LandMark", myAddress[0].LandMark),
+                new SqlParameter("AddressLine1", myAddress[0].AddressLine1),
+                new SqlParameter("Locality", myAddress[0].Locality),
+                new SqlParameter("Suite", myAddress[0].Suite),
+                new SqlParameter("City", myAddress[0].City),
+                new SqlParameter("District", myAddress[0].District),
+                new SqlParameter("StateCode", myAddress[0].StateCode),
+                new SqlParameter("PostalCode", myAddress[0].PostalCode),
+                new SqlParameter("CountryCode", myAddress[0].CountryCode));
+                addressId = Convert.ToInt32(ds.Tables[0].Rows[0]["FrameworkAddressID"].CheckDBNull());
+            }
+
+            var success = Exec("proc_ins_upd_FrameworkUserList",
+                      new SqlParameter("UserName", UserName),
+                      new SqlParameter("Password", Password),
+                      new SqlParameter("FirstName", FirstName),
+                      new SqlParameter("MiddleName", MiddleName),
+                      new SqlParameter("LastName", LastName),
+                      new SqlParameter("PrimaryEmail", PrimaryEmail),
+                      new SqlParameter("PrimaryPhone", PrimaryPhone),
+                      new SqlParameter("PrimaryFax", PrimaryFax),
+                      new SqlParameter("FrameworkApplicationUserType_FK", FrameworkApplicationUserType_FK),
+                      new SqlParameter("Company_FK", Company_FK),
+                      new SqlParameter("FrameworkAddressID", addressId)
+                    );
+            return UserName; //"Successfully Updated"; //Convert.ToString(retMsg.Value);FrameworkApplicationUserType_FK
+        }
+
+
+        // Order Header
+
+
+
+        // User Stats get_Method
+        public IList<UserStats> getUserStats(int CompanyID, string UserType, string StartDt, string EndDt)
+        {
+            IList<UserStats> UserList = null;
+            var ds = GetDataSetResult("[dbo].[proc_get_UserStats]",
+                   new SqlParameter("CompanyID", CompanyID),
+                   new SqlParameter("UserType", UserType),
+                   new SqlParameter("StartDt", StartDt),
+                   new SqlParameter("EndDt", EndDt)
+                );
+
+            UserList = (from row in ds.Tables[0].AsEnumerable()
+                        select new Entities.UserStats
+                        {
+                            UserType = Convert.ToString(row["UserType"].CheckDBNull()),
+                            DriversOnDuty = Convert.ToInt32(row["DriversOnDuty"].CheckDBNull()),
+                            TotalWaves = Convert.ToInt32(row["TotalWaves"].CheckDBNull()),
+                            CompletedWaves = Convert.ToInt32(row["CompletedWaves"].CheckDBNull()),
+                        }).ToList();
+            return UserList;
+        }
+
+
+        // All Statuses for Order Type  get_Method
+        public IList<StatusList> getStatusList()
+        {
+            IList<StatusList> StatusList = null;
+            var ds = GetDataSetResult("[dbo].[proc_get_StatusList]");
+
+            StatusList = (from row in ds.Tables[0].AsEnumerable()
+                          select new Entities.StatusList
+                          {
+                              Status_PK = Convert.ToInt32(row["Status_PK"].CheckDBNull()),
+                              Name = Convert.ToString(row["Name"].CheckDBNull()),
+                              Code = Convert.ToString(row["Code"].CheckDBNull()),
+                              ReportStatus = Convert.ToString(row["ReportStatus"].CheckDBNull()),
+                          }).ToList();
+            return StatusList;
+        }
+
+
+        // Geo Location get_Method
+        public IList<GeoLocation> getGeoLocation(int CompanyID)
+        {
+            IList<GeoLocation> GeoLocationList = null;
+            var ds = GetDataSetResult("[dbo].[proc_get_GeoFenceByCompany]",
+                   new SqlParameter("CompanyID", CompanyID)
+                );
+
+            GeoLocationList = (from row in ds.Tables[0].AsEnumerable()
+                               select new Entities.GeoLocation
+                               {
+                                   GeoFence = Convert.ToString(row["GeoFence"].CheckDBNull()),
+                               }).ToList();
+            return GeoLocationList;
+        }
+
+
+        public IList<LogistikaOrderLineItem> BindLineItemDetail(DataSet Data, int index = 0)
+        {
+
+            if (!Data.IsDataSetNotNullAndTableHasRows(index))
+            {
+
+                return (IList<LogistikaOrderLineItem>)null;
+            }
+            return Data.Tables[index].DataTableToCollectionType<LogistikaOrderLineItem>();
+        }
+
+        public IList<Document> BindDocument(DataSet Data, int index = 0)
+        {
+            if (!Data.IsDataSetNotNullAndTableHasRows(index))
+            {
+                return (IList<Document>)null;
+            }
+            return Data.Tables[index].DataTableToCollectionType<Document>();
+        }
+
+
+        // Menu get_Method
+        public IList<MenuBar> getMenuItem(string UserName, string Password)
+        {
+            return GetList<MenuBar>("[dbo].[proc_get_MenuItem]",
+                   new SqlParameter("UserName", UserName),
+                   new SqlParameter("Password", Password)
+                );
+        }
+
+        public UserDataAccess()
+            : base()
+        {
+
+        }
+
+        public bool CheckRestrictedServiceAuthorization(string UserName, string Url, string OprationCode, string ScreenCode = "MVC_KFISPORTAL")
+        {
+            var ds = GetDataSetResult("[dbo].[proc_Check_Restricted_Service_Authorization]",
+                  new SqlParameter("UserName", UserName)
+                 , new SqlParameter("OprationCode", OprationCode)
+                 , new SqlParameter("ScreenCode", ScreenCode)
+                 , new SqlParameter("URL", Url)
+                 , OutputParameter
+                );
+
+            if (ds.IsDataSetNotNullAndTableHasRows())
+            {
+                return Convert.ToString(ds.Tables[0].Rows[0][0]) == "1";
+            }
+            return false;
+        }
+        public IList<Entities.Menu.MenuItem> GetUserMenu(string UserId, string Type = "NESTED")
+        {
+            IList<Entities.Menu.MenuItem> lst = null;
+            var ds = GetDataSetResult("[dbo].[proc_get_KFIS_All_Menu_With_Operation]",
+             new SqlParameter("ScreenCode", "MVC_KfisPortal"),
+             new SqlParameter("UserName", ((UserId != string.Empty && UserId.Length > 0) ? (object)UserId : DBNull.Value)),
+             OutputParameter
+            );
+
+            if (ds.IsDataSetNotNullAndTableHasRows())
+            {
+                if (Type == "NESTED")
+                {
+                    lst = (from row in ds.Tables[0].AsEnumerable()
+                           where string.IsNullOrEmpty(Convert.ToString(row["ParentID"].CheckDBNull()))
+                           && string.IsNullOrEmpty(Convert.ToString(row["URL"].CheckDBNull()))
+                           orderby Convert.ToInt32(row["Menu_PK"].CheckDBNull()), Convert.ToInt32(row["Sequence"].CheckDBNull())
+                           select GetMenuItem(row)).ToList();
+                    if (lst != null && lst.Count > 0)
+                    {
+                        foreach (MenuItem item in lst)
+                        {
+                            GetSubMenu(ds, item);
+                        }
+                    }
+                }
+                if (Type == "LONG")
+                {
+                    lst = (from row in ds.Tables[0].AsEnumerable()
+                           orderby Convert.ToInt32(row["Menu_PK"].CheckDBNull()), Convert.ToInt32(row["Sequence"].CheckDBNull())
+                           select GetMenuItem(row)).ToList();
+                }
+                else { }
+
+            }
+
+            return lst;
+        }
+
+        public IList<Entities.Menu.MenuItem> GetAllMenu(string Type = "NESTED")
+        {
+            return GetUserMenu(string.Empty, Type);
+        }
+
+        public IList<GroupUser> GetUserGroup(int? GroupId)
+        {
+            IList<Entities.Menu.GroupUser> lst = null;
+
+            var ds = GetDataSetResult("[dbo].[proc_get_KFIS_Group_Details]",
+                new SqlParameter("GroupId", (GroupId.HasValue ? (Object)GroupId.Value : DBNull.Value))
+            , OutputParameter
+            );
+
+            if (ds.IsDataSetNotNullAndTableHasRows())
+            {
+                lst = (from row in ds.Tables[0].AsEnumerable()
+                       select new Entities.Menu.GroupUser
+                  {
+                      Name = Convert.ToString(row["GroupName"].CheckDBNull()),
+                      Description = Convert.ToString(row["Description"].CheckDBNull()),
+                      CreatedDate = Convert.ToDateTime(row["CreatedDt"].CheckDBNull()),
+                      CreatedBy = Convert.ToString(row["CreatedBy"].CheckDBNull()),
+                      GroupId = Convert.ToInt32(row["FrameworkKFISUserGroup_PK"].CheckDBNull()),
+                      IsActive = Convert.ToBoolean(row["IsActive"].CheckDBNull()),
+                      GroupUsers = Convert.ToString(row["Users"].CheckDBNull()).StringToList<string>(),
+                      OperationId = Convert.ToString(row["OperationId"].CheckDBNull()).StringToList<int>()
+
+                  }).ToList();
+            }
+            return lst;
+        }
+
+
+        public KfisUser GetKfisUser(string UserName)
+        {
+            KfisUser user = null;
+
+            var ds = GetDataSetResult("[dbo].[proc_get_UserDetails]",
+                new SqlParameter("UserName", UserName)
+            );
+
+            if (ds.IsDataSetNotNullAndTableHasRows())
+            {
+                user = (from row in ds.Tables[0].AsEnumerable()
+                        select new Entities.KfisUser
+                   {
+                       FirstName = Convert.ToString(row["FirstName"].CheckDBNull()),
+                       LastName = Convert.ToString(row["LastName"].CheckDBNull()),
+                       MiddleName = Convert.ToString(row["MiddleName"].CheckDBNull()),
+                       ModifiedBy = Convert.ToString(row["ModifiedBy"].CheckDBNull()),
+                       ModifiedDt = Convert.ToDateTime(row["ModifiedDt"].CheckDBNull()),
+                       PersonId = Convert.ToString(row["UserId"].CheckDBNull()),
+                       PrimaryClient = Convert.ToInt32(row["ClientId"].CheckDBNull()),
+                       Suffix = Convert.ToString(row["Suffix"].CheckDBNull()),
+                       Title = Convert.ToString(row["Title"].CheckDBNull()),
+                       UserName = Convert.ToString(row["UserName"].CheckDBNull()),
+                       Designation = Convert.ToString(row["ProfessionalDesignation"].CheckDBNull()),
+                       ClientList = Convert.ToString(row["ClientList"].CheckDBNull()),
+                       CreatedBy = Convert.ToString(row["CreatedBy"].CheckDBNull()),
+                       CreatedDt = Convert.ToDateTime(row["CreatedDt"].CheckDBNull()),
+                       Active = Convert.ToBoolean(row["Active"].CheckDBNull()),
+                       // FullName = ,
+                       JobTitle = Convert.ToString(row["JobTitle"].CheckDBNull()),
+                       KfisUserId = Convert.ToInt32(row["UserId"].CheckDBNull()),
+                       LastLogin = Convert.ToDateTime(row["LastLogin"].CheckDBNull()),
+                       LeftImagePath = Convert.ToString(row["LeftImagePath"].CheckDBNull()),
+                       RightImagePath = Convert.ToString(row["RightImagePath"].CheckDBNull()),
+                       AddtionalPermissionList = Convert.ToString(row["AddtionalPermissionList"].CheckDBNull()),
+                       Contact = new Contact
+                       {
+                           Phone = Convert.ToString(row["PhonePrimary"].CheckDBNull()),
+                           SecondaryPhone = Convert.ToString(row["PhoneSecondary"].CheckDBNull()),
+                           FaxNo = Convert.ToString(row["Fax"].CheckDBNull()),
+                           Email = Convert.ToString(row["EmailAddressPrimary"].CheckDBNull()),
+                           SecondaryEmail = Convert.ToString(row["EmailAddressSecondary"].CheckDBNull()),
+                       }
+
+                   }).FirstOrDefault();
+            }
+            return user;
+        }
+
+        public string SaveUser(KfisUser User)
+        {
+            var retMsg = GetOutputParameter("RetMsg", ParameterDirection.InputOutput);
+            retMsg.Value = "MVC_KfisPortal";
+            var success = Exec("proc_ins_upd_KFIS_User",
+                     new SqlParameter("KFISUser_PK", User.KfisUserId)
+                    , new SqlParameter("UserName", User.UserName)
+                    , new SqlParameter("Title", User.Title)
+                    , new SqlParameter("FirstName", User.FirstName)
+                    , new SqlParameter("MiddleName", User.MiddleName)
+                    , new SqlParameter("LastName", User.LastName)
+                    , new SqlParameter("Suffix", User.Suffix)
+                    , new SqlParameter("Designation", User.Designation)
+                    , new SqlParameter("Password", User.Password)
+                    , new SqlParameter("Active", User.Active)
+                    , new SqlParameter("PrimaryClient_PK", User.PrimaryClient)
+                    , new SqlParameter("JobTitle", User.JobTitle)
+                    , new SqlParameter("PhonePrimary", User.Contact.PhoneNumber)
+                    , new SqlParameter("PhoneSecondary", User.Contact.SecondaryPhone)
+                    , new SqlParameter("Fax", User.Contact.FaxNo)
+                    , new SqlParameter("EmailPrimary", User.Contact.Email)
+                    , new SqlParameter("EmailSecondary", User.Contact.SecondaryEmail)
+                    , new SqlParameter("CreatedBy", User.CreatedBy)
+                    , new SqlParameter("ModifiedBy", User.CreatedBy)
+                    , new SqlParameter("PermissionList", User.PermissionList)
+                    , new SqlParameter("ClientList", (string.IsNullOrEmpty(User.ClientList) ? "-1" : User.ClientList))
+                    , new SqlParameter("PasswordText", String.Empty)
+                    , retMsg
+                    );
+
+            return Convert.ToString(retMsg.Value);
+        }
+
+
+
+        #region Private Methods
+
+        private Entities.Menu.MenuItem GetMenuItem(DataRow row)
+        {
+            return new Entities.Menu.MenuItem
+            {
+                MenuText = Convert.ToString(row["MenuText"].CheckDBNull()),
+                Sequence = Convert.ToInt32(row["Sequence"].CheckDBNull()),
+                ScreenName = Convert.ToString(row["ScreenName"].CheckDBNull()),
+                MenuId = Convert.ToInt32(row["Menu_PK"].CheckDBNull()),
+                MenuURL = Convert.ToString(row["URL"].CheckDBNull()),
+                ToolTip = Convert.ToString(row["ToolTip"].CheckDBNull()),
+                ParentId = Convert.ToInt32(row["ParentID"].CheckDBNull()),
+                //Operations = Convert.ToString(row["Operation"].CheckDBNull()).StringToList<Operation>(),
+                OperationsUrl = GetOperationUrl(Convert.ToString(row["OperationWithId"].CheckDBNull()))
+
+            };
+        }
+
+        private void GetSubMenu(DataSet DataSource, MenuItem Item)
+        {
+            var lst = (from row in DataSource.Tables[0].AsEnumerable()
+                       where Item.MenuId == Convert.ToInt32(row["ParentID"].CheckDBNull())
+                       orderby Convert.ToInt32(row["Sequence"].CheckDBNull())
+                       select GetMenuItem(row)).ToList<MenuItem>();
+            if (lst != null && lst.Count > 0)
+            {
+                Item.SubMenu = lst;
+
+                foreach (MenuItem item in lst)
+                {
+                    GetSubMenu(DataSource, item);
+                }
+            }
+
+        }
+
+        private IList<OperationUrl> GetOperationUrl(string StringToFormat)
+        {
+            IList<OperationUrl> lstOperationUrl = null;
+            if (!string.IsNullOrEmpty(StringToFormat))
+            {
+                lstOperationUrl = new List<OperationUrl>();
+                var lstOfOperation = StringToFormat.StringToList<string>(",");
+                if (lstOfOperation != null && lstOfOperation.Count > 0)
+                {
+
+                    foreach (string str in lstOfOperation)
+                    {
+                        var ou = new OperationUrl();
+
+                        int index = str.IndexOf('(');
+                        if (index > 0)
+                        {
+                            var operation = str.Substring(0, index);
+                            var id = str.Substring(index + 1, str.Length - index - 2);
+                            lstOperationUrl.Add(new OperationUrl
+                            {
+                                Code = operation,
+                                OperationUrlId = Convert.ToInt32(id)
+                            });
+                        }
+
+                    }
+                }
+            }
+            return lstOperationUrl;
+        }
+        #endregion
+
+    }
+}

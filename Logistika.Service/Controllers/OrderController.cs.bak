@@ -1,0 +1,84 @@
+﻿using Logistika.Service.Common.BusinessComponentInterface.User;
+using Logistika.Service.Common.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Results;
+
+namespace Logistika.Service.Controllers
+{
+    //[Authorize]
+
+    public class OrderController : ApiController
+    {
+        IOrderBusinessComponent _businessInstance = null;
+        public OrderController(IOrderBusinessComponent Instance)
+        {
+            _businessInstance = Instance;
+        }
+
+        [HttpGet]
+        [Route("api/Order/OrderStats")]
+        public IList<OrderStats> getOrderStats(int CompanyID, string StartDt, string EndDt)
+        {
+            return _businessInstance.getOrderStats(CompanyID, StartDt, EndDt);
+        }
+
+        [HttpGet]
+        [Route("api/Order/OrderStatsArea")]
+        public IList<OrderStatsArea> getOrderStatsArea(int CompanyID, string StartDt, string EndDt)
+        {
+            return _businessInstance.getOrderStatsArea(CompanyID, StartDt, EndDt);
+        }
+
+
+        [HttpGet]
+        [Route("api/Order/DeliveryRepLoc")]
+        public IList<DeliveryRep> getDeliveryRepknownLoc(int CompanyID)
+        {
+            return _businessInstance.getDeliveryRepknownLoc(CompanyID);
+        }
+
+
+        [HttpPost]
+        [Route("api/Order/LogistikaOrder")]
+        public string createOrder(LogistikaOrderHeader orderHeader)
+        {
+            if (orderHeader != null)
+            {
+                orderHeader.LastModifiedBy = this.GetRefUser();
+                return _businessInstance.createOrder(orderHeader);
+            }
+            return "Invalid Object";
+        }
+        [HttpGet]
+        [Route("api/Order/OrderDriver")]
+        //IList<OrderDriverInfo>
+        public IHttpActionResult getOrderDriverInfo(DateTime? StartDt = null, DateTime? EndDt = null, string OrderStatusCode = null, string OrderID = null)
+        {
+            //NotFound()
+            if (string.IsNullOrEmpty(OrderID) && string.IsNullOrEmpty(OrderStatusCode))
+            {
+                return NotFound();
+            }
+            return Ok(_businessInstance.getOrderDriverInfo(StartDt, EndDt, OrderStatusCode, OrderID));
+        }
+
+        [HttpGet]
+        [Route("api/Order/Detail")]
+        public IList<LogistikaOrderHeader> OrderDetail(string OrderId)
+        {
+            return _businessInstance.getOrderDetail(OrderId);
+
+        }
+        [HttpGet]
+        public String TestWebService()
+        {
+            return "testWebService";
+        }
+
+    }
+}

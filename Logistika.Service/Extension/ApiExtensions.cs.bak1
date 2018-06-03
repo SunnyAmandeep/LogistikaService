@@ -1,0 +1,28 @@
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Web.Http;
+
+namespace Logistika.Service.Controllers
+{
+    public static class ApiExtensions
+    {
+        public static string GetRefUser(this ApiController cntl)
+        {
+            var uname = "";
+            try { uname =((ClaimsIdentity)cntl.User.Identity).Claims.FirstOrDefault(x => x.Type == "Name").Value; }
+            catch { }
+            if (string.IsNullOrEmpty(uname)){
+                try { uname = ((ClaimsIdentity)cntl.User.Identity).Claims.FirstOrDefault(x => x.Type == "sub").Value; }
+                catch { }
+            }
+            return string.IsNullOrEmpty(uname)?"LogistikaAppUser": uname;// change return "" so that we deny the request
+        }
+        public static int GetCompanyId(this ApiController cntl)
+        {
+            try { return Convert.ToInt32(((ClaimsIdentity)cntl.User.Identity).Claims.FirstOrDefault(x => x.Type == "CompanyId").Value); }
+            catch { }
+            return 0;
+        }
+    }
+}

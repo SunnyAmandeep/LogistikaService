@@ -1,0 +1,23 @@
+
+using System;
+namespace Logistika.Service.Common.Entities
+{
+    public class KfisUser : Person
+    {
+
+        public int KfisUserId { get; set; }
+        public string UserName { get; set; }
+        public string Designation { get; set; }
+        public string Password { get; set; }
+        public bool Active { get; set; }
+        public int PrimaryClient { get; set; }
+        public string ClientList { get; set; }
+        public string PermissionList { get; set; }
+        public string JobTitle { get; set; }
+        public DateTime LastLogin { get; set; }
+
+        public string LeftImagePath { get; set; }
+        public string RightImagePath { get; set; }
+        public string AddtionalPermissionList { get; set; }
+    }
+}

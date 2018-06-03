@@ -1,0 +1,4 @@
+﻿Name|Age|Type
+James|34|SuperHero
+Aman|16|KarurSingh
+Venu|21|MaheshBabu

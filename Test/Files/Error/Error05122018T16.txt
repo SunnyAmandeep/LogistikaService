@@ -1,0 +1,10 @@
+Error for VendorOrderID: COR123233. Message :City is missing.
+Date :12/05/2018 16:01:24
+
+-----------------------------------------------------------------------------
+
+Error for VendorOrderID: COR123236. Message :AddressLine1 is missing.
+Date :12/05/2018 16:01:25
+
+-----------------------------------------------------------------------------
+

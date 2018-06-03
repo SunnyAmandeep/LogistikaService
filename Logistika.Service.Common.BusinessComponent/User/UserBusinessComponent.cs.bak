@@ -1,0 +1,253 @@
+
+using Logistika.Service.Common.BusinessComponentInterface.User;
+using Logistika.Service.Common.Entities;
+using Logistika.Service.Common.Helper.ADHelper;
+using System;
+using System.Collections.Generic;
+
+namespace Logistika.Service.Common.DataAccessInterface.User
+{
+    public class UserBusinessComponent : IUserBusinessComponent
+    {
+        IUserDataAccess _userDataAccess = null;
+
+        public UserBusinessComponent(IUserDataAccess Instance)
+        {
+            _userDataAccess = Instance;
+        }
+
+        public IList<string> GetUserRoles(string UserId)
+        {
+            return _userDataAccess.GetUserRoles(UserId);
+        }
+
+        public FrameworkUser AuthenticateUser(string UserName, string Password)
+        {
+            if (!string.IsNullOrEmpty(Password))
+            {
+                var userList = _userDataAccess.getUserList(UserName);
+                if (userList != null && userList.Count > 0 && !string.IsNullOrEmpty(Password) && userList[0].Password.Equals(Password)) //userList[0].Password.Equals(Encryption.EncryptionManager.DecryptString(Password)))
+                {
+
+                    return userList[0];
+                }
+            }
+            return (FrameworkUser)null;
+        }
+
+        public IList<FrameworkUser> getUserList(string UserName)
+        {
+            return _userDataAccess.getUserList(UserName);
+        }
+
+        public IList<ItemList> getItemList(string Type)
+        {
+            return _userDataAccess.getItemList(Type);
+        }
+
+        public string AddUpdateCompany(string CompanyName, string TaxIdentification, int IsActive, string AuthCode)
+        {
+            return _userDataAccess.AddUpdateCompany(CompanyName, TaxIdentification, IsActive, AuthCode);
+        }
+
+        public string InsUpdFleetinfo(Fleet myfleet)
+        {
+            return _userDataAccess.InsUpdFleetinfo(myfleet);
+        }
+
+        public IList<CompanyAddress> getCompanyAddressList(int CompanyID, int FrameworkAddressID)
+        {
+            return _userDataAccess.getCompanyAddressList(CompanyID, FrameworkAddressID);
+        }
+
+        public IList<EmployeePlanner> GetEmployeePlannerList(int CompanyID, int CompanyAddressID, string LastModifiedBy, char Operation)
+        {
+            return _userDataAccess.GetEmployeePlannerList(CompanyID, CompanyAddressID, LastModifiedBy, Operation);
+        }
+
+        public IList<Fleet> getFleetMaster(string Make, string Model)
+        {
+            return _userDataAccess.getFleetMaster(Make, Model); 
+        }
+
+        //public IList<DocumentType> getDocumentType(string AccountType)
+        //{
+        //    return _userDataAccess.getDocumentType(AccountType);
+        //}
+
+        public IList<GeoLocation> getGeoLocation(int CompanyID)
+        {
+            return _userDataAccess.getGeoLocation(CompanyID);
+        }
+
+
+        public IList<UserStats> getUserStats(int CompanyID, string UserType, string StartDt, string EndDt)
+        {
+            return _userDataAccess.getUserStats(CompanyID, UserType, StartDt, EndDt);
+        }
+
+
+        public IList<StatusList> getStatusList()
+        {
+            return _userDataAccess.getStatusList();
+        }
+
+        public IList<MenuBar> getMenuItem(string UserName, string Password)
+        {
+            return _userDataAccess.getMenuItem(UserName, Password);
+        }
+
+
+        //public IList<CompanyAddress> getCompanyAddressListSingle(int CompanyID)
+        //{
+        //    return _userDataAccess.getCompanyAddressListSingle(CompanyID);
+        //}
+
+        /*{
+           UserName
+         * FullName
+         * Email
+         * CurrentPassword //Encrypted
+         * IList<Menu>
+         * Last Login
+         * }
+         */
+
+
+        public AuthUser AuthorizeUser(string UserName, string Password)
+        {
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
+            {
+                throw new Exception("UserName or Password cannot be null and empty");
+            }
+            IList<FrameworkUser> UserList = null;
+            UserList = _userDataAccess.getUserList(UserName);
+
+            if (UserList != null && UserList.Count > 0 && UserList[0].Password.ToString() == Password)
+            {
+                _userDataAccess.AuditLogin(UserName);
+                var menuList = _userDataAccess.getMenuItem(UserName, Password);
+                return new AuthUser
+                {
+                    Email = UserList[0].PrimaryEmail,
+                    FullName = UserList[0].FirstName + " " + UserList[0].LastName,
+                    LastLoginDt = UserList[0].LastLoginDt,
+                    Password = UserList[0].Password,
+                    UserName = UserList[0].UserName,
+                    Menu = menuList
+                };
+            }
+            return (AuthUser)null;
+        }
+
+        //public string SaveFrameworkUser2(string UserName, string Password, string FirstName, string MiddleName
+        //        , string LastName, string PrimaryEmail, string PrimaryPhone, string PrimaryFax, int FrameworkApplicationUserType_FK, int Company_FK
+        //        , string LandMark, string AddressLine1, string Locality, string  Suite, string City, string District, string StateCode)
+        //{
+        //    Address myAddress = new Address();
+        //    myAddress.LandMark = LandMark;
+        //    myAddress.AddressLine1 = AddressLine1;
+        //    myAddress.Locality = Locality;
+        //    myAddress.Suite = Suite;
+        //    myAddress.City = City;
+        //    myAddress.District = District;
+        //    myAddress.StateCode = StateCode;
+        //    myAddress.CountryCode = "IN";
+        //    return SaveFrameworkUser(UserName, Password, FirstName, MiddleName, LastName, PrimaryEmail, PrimaryPhone, PrimaryFax, FrameworkApplicationUserType_FK, Company_FK, myAddress);
+        //}
+
+        public string SaveFrameworkUser(string UserName, string Password, string FirstName, string MiddleName, string LastName, string PrimaryEmail, string PrimaryPhone, string PrimaryFax, int FrameworkApplicationUserType_FK, int Company_FK, IList<Address> myAddress)
+        {
+            return _userDataAccess.SaveFrameworkUser(UserName, Password, FirstName, MiddleName, LastName, PrimaryEmail, PrimaryPhone, PrimaryFax, FrameworkApplicationUserType_FK, Company_FK, myAddress);
+        }
+
+
+        public IList<Entities.Menu.MenuItem> GetUserMenu(string UserId, string Type = "NESTED")
+        {
+            return _userDataAccess.GetUserMenu(UserId, Type);
+        }
+
+        public IList<Entities.Menu.MenuItem> GetAllUserMenu(string Type = "NESTED")
+        {
+            return _userDataAccess.GetUserMenu(string.Empty, Type);
+        }
+
+        public IList<Entities.Menu.GroupUser> GetUserGroup(int? GroupId)
+        {
+            return _userDataAccess.GetUserGroup(GroupId);
+        }
+        public bool CheckRestrictedServiceAuthorization(string UserName, string Url, string OprationCode, string ScreenCode = "MVC_KFISPORTAL") { return _userDataAccess.CheckRestrictedServiceAuthorization(UserName, Url, OprationCode, ScreenCode); }
+
+
+        public Entities.KfisUser GetKfisUser(string UserName)
+        {
+            if (string.IsNullOrEmpty(UserName))
+            {
+                throw new Exception("UserName cannot be empty");
+            }
+            return _userDataAccess.GetKfisUser(UserName);
+        }
+
+        public string SaveUser(Entities.KfisUser User)
+        {
+            if (User == null)
+            {
+                return "User cannot be null";
+            }
+            if (string.IsNullOrEmpty(User.UserName))
+            {
+                return "UserName cannot be empty";
+            }
+
+            if (string.IsNullOrEmpty(User.FirstName))
+            {
+                return "FirstName cannot be empty";
+            }
+            if (string.IsNullOrEmpty(User.LastName))
+            {
+                return "LastName cannot be empty";
+            }
+            if (User.PrimaryClient <= 0)
+            {
+                return "PrimaryClient cannot be empty";
+            }
+            if (User.Contact == null || string.IsNullOrEmpty(User.Contact.Email))
+            {
+                return "Email cannot be empty";
+            }
+            return _userDataAccess.SaveUser(User);
+        }
+
+
+        public Entities.KfisUser GetAdUser(string UserName)
+        {
+            KfisUser kfisUser = null;
+            if (string.IsNullOrEmpty(UserName))
+            {
+                throw new Exception("UserName cannot be null or empty");
+            }
+            var adUser = new ActiveDirectoryHelper().GetUserByLoginName(UserName);
+            if (adUser != null)
+            {
+                kfisUser = new KfisUser
+                {
+                    FirstName = adUser.FirstName,
+                    LastName = adUser.LastName,
+                    MiddleName = adUser.MiddleName,
+                    Title = adUser.Title,
+                    UserName = adUser.LoginNameWithDomain,
+                    Contact = new Contact
+                        {
+                            Phone = adUser.Mobile,
+                            SecondaryPhone = adUser.HomePhone,
+                            FaxNo = adUser.Fax,
+                            Email = adUser.EmailAddress
+                        },
+                    Photo = adUser.Photo
+                };
+            }
+            return kfisUser;
+        }
+    }
+
+}

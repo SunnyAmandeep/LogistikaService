@@ -1,0 +1,286 @@
+using Logistika.Service.Common.BusinessComponentInterface.User;
+using Logistika.Service.Common.Entities;
+using Logistika.Service.Common.Entities.Menu;
+using System;
+using System.Collections.Generic;
+using System.Web.Http;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Logistika.Service.Common.Helper;
+
+namespace Logistika.Service.Controllers
+{
+    //[Authorize]
+    // [RoutePrefix("api/Account")]
+
+    public class AccountController : ApiController
+    {
+
+        IUserBusinessComponent _businessInstance = null;
+        public AccountController(IUserBusinessComponent Instance)
+        {
+            _businessInstance = Instance;
+        }
+        [HttpGet]
+        [Route("api/Company/Users")]
+        public IList<FrameworkUser> GetCompanyUser()
+        {
+            return (IList<FrameworkUser>)null; // _businessInstance.GetCompanyUser(UserName);
+        }
+        [HttpGet]
+        [Route("api/Account/getUserList")]
+        public IList<FrameworkUser> getUserList(string UserName)
+        {
+            return _businessInstance.getUserList(UserName);
+        }
+
+        [HttpGet]
+        [Route("api/Account/ItemList")]
+        public IList<ItemList> getItemList(string Type)
+        {
+            return _businessInstance.getItemList(Type);
+        }
+
+        [HttpPost]
+        [Route("api/Account/AuthorizeUser")]
+        public AuthUser AuthorizeUser([FromBody] JObject Data)
+        {
+            if (Data == null)
+            {
+                return (AuthUser)null;
+            }
+            Dictionary<string, string> data = Data.ToObject<Dictionary<string, string>>();
+            //[FromBody]string UserName, [FromBody]string Password
+            //dynamic data = Data;
+            return _businessInstance.AuthorizeUser(data["UserName"], data["Password"]);
+        }
+
+        [HttpGet]
+        [Route("api/Account/Company/Address")]
+        public IList<CompanyAddress> getCompanyAddressList(int? FrameworkAddressID = 0)
+        {
+            return _businessInstance.getCompanyAddressList(Convert.ToInt32(ClaimHelper.CompanyId), FrameworkAddressID.HasValue ? FrameworkAddressID.Value : 0);
+            //return _businessInstance.getCompanyAddressList( 2, FrameworkAddressID.HasValue ? FrameworkAddressID.Value : 0);
+        }
+
+        [HttpGet]
+        [Route("api/Account/Company/HandOffAddress")]
+        public IList<CompanyAddress> getHandOffAddress()
+        {
+            return _businessInstance.GetHandOffAddress(Convert.ToInt32(ClaimHelper.CompanyId));
+            //return _businessInstance.getCompanyAddressList( 2, FrameworkAddressID.HasValue ? FrameworkAddressID.Value : 0);
+        }
+
+        //[HttpGet]
+        //[Route("api/Account/FleetMaster")]
+        //public IList<Fleet> GetFleetMaster(string Make, string Model="")
+        //{
+        //    return _businessInstance.getFleetMaster(Make, Model);
+        //}
+
+        [HttpGet]
+        [Route("api/Account/Company")]
+        public string AddUpdateCompany(string CompanyName, string TaxIdentification, int IsActive, string AuthCode)
+        {
+            return _businessInstance.AddUpdateCompany(CompanyName, TaxIdentification, IsActive, AuthCode);
+        }
+
+        [HttpGet]
+        [Route("api/Account/EmployeePlanner")]
+        public IList<EmployeePlannerModal> GetEmployeePlanner(int? CompanyID = 0, int? CompanyAddressID = 0)
+        {
+            return _businessInstance.GetEmployeePlannerList(CompanyID, CompanyAddressID);
+        }
+
+        [HttpPost]
+        [Route("api/Account/EmployeePlanner")]
+        public bool UpdateEmployeePlanner (EmployeePlannerModal EmployeePlanner)
+        {
+            return _businessInstance.UpdateEmployeePlanner(EmployeePlanner.employeePlanner);
+        }
+
+        [HttpGet]
+        [Route("api/Account/Company/User")]
+        public LogistikaUserModal GetUsers(int? Id = 0, int? AddressId = 0)
+        {
+            return _businessInstance.GetsUsers(Id, AddressId);
+        }
+
+        [HttpPost]
+        [Route("api/Account/Company/User")]
+        public bool InsertUpdateUser(LogistikaUserModal Modal)
+        {
+            return _businessInstance.SaveUser(Modal.User, Modal.Documents);
+        }
+
+        //[HttpPost]
+        //[Route("api/Account/FleetDoc")]
+        //public string InsUpdFleetinfo(Fleet myfleet)
+        //{
+        //    return _businessInstance.InsUpdFleetinfo(myfleet);
+        //}
+
+
+        [HttpGet]
+        [Route("api/Account/UserStats")]
+        public IList<UserStats> getUserStats(int CompanyID, string UserType, string StartDt, string EndDt)
+        {
+            return _businessInstance.getUserStats(CompanyID, UserType, StartDt, EndDt);
+        }
+
+        [HttpGet]
+        [Route("api/Account/StatusList")]
+        public IList<StatusList> getStatusList()
+        {
+            return _businessInstance.getStatusList();
+        }
+
+
+
+        [HttpGet]
+        [Route("api/Account/Menu")]
+        public IList<MenuBar> getMenuItem(string userName, string Password)
+        {
+            return _businessInstance.getMenuItem(userName, Password);
+        }
+
+
+        [HttpPost]
+        [Route("api/Account/FrameworkUser1")]
+        public string SaveFrameworkUser1(FrameworkUser User)
+        {
+            return "Test";//_businessInstance.SaveFrameworkUser(UserName, Password, FirstName, MiddleName, LastName, PrimaryEmail, PrimaryPhone, PrimaryFax, FrameworkApplicationUserType_FK, Company_FK, MyAddress);
+        }
+
+        [HttpPost]
+        [Route("api/Account/Address")]
+        public string SaveAddress(IList<Address> MyAddress)
+        {
+            return "Success";
+        }
+
+        [HttpPost]
+        [Route("api/Account/SaveFrameworkUser")]
+        public string SaveFrameworkUser(string UserName, string Password, string FirstName, string MiddleName, string LastName, string PrimaryEmail, string PrimaryPhone, string PrimaryFax, int FrameworkApplicationUserType_FK, int Company_FK, IList<Address> MyAddress)
+        {
+            return _businessInstance.SaveFrameworkUser(UserName, Password, FirstName, MiddleName, LastName, PrimaryEmail, PrimaryPhone, PrimaryFax, FrameworkApplicationUserType_FK, Company_FK, MyAddress);
+        }
+
+
+
+        //[HttpGet]
+        //[Route("api/Account/UserRoles")]
+        //public IList<string> GetUserRole(string UserId)
+        //{
+        //    return _businessInstance.GetUserRoles(UserId);
+        //}
+
+        //[HttpGet]
+        //[Route("api/User/Menu")]
+        ////Type can be nested List, long List or Both
+        ////NESTED,LONG
+        //public IList<MenuItem> GetMenu(string UserId, String Type)
+        //{
+        //    return _businessInstance.GetUserMenu(UserId, Type);
+        //}
+
+        //[HttpGet]
+        //[Route("api/Menu")]
+        ////Type can be nested List, long List or Both
+        ////NESTED,LONG
+        //public IList<MenuItem> GetAllUserMenu(String Type)
+        //{
+        //    return _businessInstance.GetAllUserMenu(Type);
+        //}
+
+        //[HttpGet]
+        //[Route("api/User/Group")]
+        //public IList<GroupUser> GetUserGroup(int? Id = 0)
+        //{
+        //    return _businessInstance.GetUserGroup(Id);
+        //}
+
+        //[HttpGet]
+        //[Route("api/ActiveDirectory/User")]
+        //public KfisUser GetUserADDetails(string UserName, string Domain = "lkw")
+        //{
+
+        //    if (string.IsNullOrEmpty(UserName))
+        //    {
+        //        throw new Exception("UserName cannot be null or empty");
+        //    }
+        //    string domainAndUsername = "";
+        //    if (!string.IsNullOrEmpty(Domain) && Domain.ToLower() != "lkw")
+        //    {
+        //        domainAndUsername = Domain + @"\";
+        //    }
+        //    domainAndUsername = domainAndUsername + UserName;
+        //    KfisUser user = null;
+        //    try
+        //    {
+        //        user = _businessInstance.GetAdUser(UserName);
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //    return user;
+
+        //}
+
+        //[HttpGet]
+        //[Route("api/kfis/User")]
+        //public KfisUser GetKfisUser(string UserName, string Domain = "lkw")
+        //{
+
+        //    if (string.IsNullOrEmpty(UserName))
+        //    {
+        //        throw new Exception("UserName cannot be null or empty");
+        //    }
+        //    if (!UserName.Contains(@"\"))
+        //    {
+        //        UserName = Domain + "\\" + UserName;
+        //    }
+        //    return _businessInstance.GetKfisUser(UserName);
+
+        //}
+
+        //[HttpPost]
+        //[Route("api/kfis/User")]
+
+        //public string SaveUser(KfisUser User)
+        //{
+        //    if (User == null)
+        //    {
+        //        return "UserName cannot be null or empty";
+        //    }
+        //    User.CreatedBy = this.GetRefUser();
+        //    User.ModifiedBy = this.GetRefUser();
+        //    return _businessInstance.SaveUser(User);
+
+        //}
+        ////private ApplicationUserManager _userManager;
+
+        ////public AccountController()
+        ////{
+        ////}
+
+        ////public AccountController(ApplicationUserManager userManager,
+        ////    ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        ////{
+        ////    UserManager = userManager;
+        ////    AccessTokenFormat = accessTokenFormat;
+        ////}
+
+
+        ////// POST api/Account/Logout
+        ////[Route("Logout")]
+        ////public IHttpActionResult Logout()
+        ////{
+        ////    Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+        ////    return Ok();
+        ////}
+
+
+    }
+}

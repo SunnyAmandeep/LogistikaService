@@ -1,0 +1,260 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+
+namespace Logistika.Service.Common.Helper
+{
+    public class DTOToXMLManager
+    {
+        public static string ConvertDTOToXML<T>(string RootTableName, string TableName, IList<T> DTOCollection) where T : class
+        {
+            DataTable dataTable = null;
+            try
+            {
+                if (string.IsNullOrEmpty(RootTableName))
+                {
+                    throw new ArgumentException("Root Table Name can't be null or empty string");
+                }
+                if (string.IsNullOrEmpty(TableName))
+                {
+                    throw new ArgumentException("Table Name can't be null or empty string");
+                }
+                if (DTOCollection == null || DTOCollection.Count == 0)
+                {
+                    throw new ArgumentException("DTOCollection can't be null or empty");
+                }
+                DataSet dataSet = new DataSet();
+                string s = ConvertDTOToXmlString(DTOCollection);
+                using (StringReader stringReader = new StringReader(s))
+                {
+                    dataSet.ReadXml(stringReader);
+                    dataTable = dataSet.Tables[0];
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ConvertDtToXmlWithNoTagOnNullValue(RootTableName, TableName, dataTable);
+        }
+
+        private static string ConvertDtToXmlWithNoTagOnNullValue(string RootTableName, string TableName, DataTable dataTable)
+        {
+            string result;
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                if (string.IsNullOrEmpty(RootTableName))
+                {
+                    throw new ArgumentException("Root Table Name can't be null or Empty string");
+                }
+                if (string.IsNullOrEmpty(TableName))
+                {
+                    throw new ArgumentException("Table Name can't be null or Empty string");
+                }
+                if (dataTable == null)
+                {
+                    throw new ArgumentException("DataTable can't be null ");
+                }
+                if (dataTable == null)
+                {
+                    result = stringBuilder.ToString();
+                }
+                else
+                {
+                    if (RootTableName.Length == 0 || TableName.Length == 0 || dataTable.Rows.Count == 0)
+                    {
+                        result = stringBuilder.ToString();
+                    }
+                    else
+                    {
+                        stringBuilder.Append("<" + RootTableName.ToUpper(CultureInfo.InvariantCulture) + "> ");
+                        foreach (DataRow dataRow in dataTable.Rows)
+                        {
+                            stringBuilder.Append(" <" + TableName.ToUpper(CultureInfo.InvariantCulture) + " ");
+                            for (int i = 0; i < dataTable.Columns.Count; i++)
+                            {
+                                if (dataRow[i] is DBNull)
+                                {
+                                    stringBuilder.Append(" ");
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrEmpty(dataRow[i].ToString()))
+                                    {
+                                        stringBuilder.Append(dataTable.Columns[i].ColumnName.ToUpper(CultureInfo.InvariantCulture));
+                                        stringBuilder.Append("=\"");
+                                    }
+                                    if (dataTable.Columns[i].DataType.ToString() == "System.Boolean")
+                                    {
+                                        if (dataRow[i].ToString() == "False")
+                                        {
+                                            stringBuilder.Append("0\" ");
+                                        }
+                                        else
+                                        {
+                                            stringBuilder.Append("1\" ");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (dataTable.Columns[i].DataType.ToString() == "System.String")
+                                        {
+                                            StringBuilder stringBuilder2 = new StringBuilder();
+                                            if (!string.IsNullOrEmpty(dataRow[i].ToString()))
+                                            {
+                                                stringBuilder2.Append(dataRow[i].ToString());
+                                                stringBuilder2.Replace("&", "&amp;");
+                                                stringBuilder2.Replace("\"", "&quot;");
+                                                stringBuilder2.Replace("<", "&lt;");
+                                                stringBuilder2.Replace(">", "&gt;");
+                                                stringBuilder.Append(stringBuilder2.ToString() + "\" ");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            stringBuilder.Append(dataRow[i] + "\" ");
+                                        }
+                                    }
+                                }
+                            }
+                            stringBuilder.Append("/> ");
+                        }
+                        stringBuilder.Append("</" + RootTableName.ToUpper(CultureInfo.InvariantCulture) + ">");
+                        result = stringBuilder.ToString();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
+        }
+
+        public static string ConvertDTOToXmlString<T>(IList<T> Lstdto) where T : class
+        {
+            string result;
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                if (Lstdto == null)
+                {
+                    throw new ArgumentException("DTO collection can't be null");
+                }
+                if (Lstdto != null)
+                {
+                    string text = string.Empty;
+                    int count = Lstdto.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (Lstdto[i] != null)
+                        {
+                            using (StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture))
+                            {
+                                XmlSerializer xmlSerializer = new XmlSerializer(Lstdto[i].GetType());
+                                xmlSerializer.Serialize(stringWriter, Lstdto[i]);
+                                text = stringWriter.ToString();
+                                if (i != 0)
+                                {
+                                    text = text.ToString().Remove(0, 41);
+                                    int num = text.IndexOf(" ", 0, StringComparison.OrdinalIgnoreCase);
+                                    int num2 = text.IndexOf(">", 0, StringComparison.OrdinalIgnoreCase);
+                                    text = text.Remove(num, num2 - num);
+                                }
+                                stringBuilder.Append(text.ToString());
+                            }
+                        }
+                    }
+                    string text2 = stringBuilder.ToString();
+                    if (!string.IsNullOrEmpty(text2))
+                    {
+                        int startIndex = text2.IndexOf(Lstdto[0].GetType().Name, StringComparison.OrdinalIgnoreCase);
+                        text2 = text2.Remove(startIndex, Lstdto[0].GetType().Name.Length);
+                        text2 = text2.Insert(startIndex, "ROOT");
+                        int num3 = text2.IndexOf(">", 50, StringComparison.OrdinalIgnoreCase);
+                        text2 = text2.Insert(num3 + 2, "<" + Lstdto[0].GetType().Name + ">");
+                        text2 = text2.Replace("utf-16", "utf-8");
+                        text2 += "</ROOT>";
+                    }
+                    result = text2.ToString();
+                }
+                else
+                {
+                    result = stringBuilder.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
+        }
+    }
+
+    public static class DynamicToXMLManager
+    {
+        private static readonly Type[] _writeTypes = new[] { typeof(string), typeof(DateTime), typeof(Enum), typeof(decimal), typeof(Guid) }; ///
+        public static bool IsSimpleType(this Type type) { return type.IsPrimitive || _writeTypes.Contains(type); } ///
+        public static XElement ToXml(this object input) { return input.ToXml(null); } ///
+
+        public static string ToXml(this IList<object> Inputs, string OuterElement, string InnerElement)
+        {
+            if (Inputs == null) { return null; }
+            if (String.IsNullOrEmpty(OuterElement))
+            { OuterElement = "objects"; }
+            OuterElement = XmlConvert.EncodeName(OuterElement);
+            var ret = new XElement(OuterElement);
+            foreach (var input in Inputs)
+            {
+                if (input != null)
+                {
+                    ret.Add(input.ToXml(InnerElement));
+                }
+            }
+
+            return ret.ToString();
+        }
+
+        public static XElement ToXml(this object input, string element)
+        {
+            if (input == null) { return null; }
+            if (String.IsNullOrEmpty(element))
+            { element = "object"; }
+            element = XmlConvert.EncodeName(element);
+            var ret = new XElement(element);
+            if (input != null)
+            {
+                var type = input.GetType();
+                var props = type.GetProperties();
+                var elements = from prop in props
+                               let name = XmlConvert.EncodeName(prop.Name)
+                               let val = prop.PropertyType.IsArray ? "array" : prop.GetValue(input, null)
+                               let value = prop.PropertyType.IsArray ? GetArrayElement(prop, (Array)prop.GetValue(input, null)) : (prop.PropertyType.IsSimpleType() ? new XElement(name, val) : val.ToXml(name))
+                               where value != null
+                               select value;
+                ret.Add(elements);
+            } return ret;
+        }
+        private static XElement GetArrayElement(PropertyInfo info, Array input)
+        {
+            var name = XmlConvert.EncodeName(info.Name);
+            XElement rootElement = new XElement(name);
+            var arrayCount = input.GetLength(0); for (int i = 0; i < arrayCount; i++)
+            {
+                var val = input.GetValue(i);
+                XElement childElement = val.GetType().IsSimpleType() ? new XElement(name + "Child", val) : val.ToXml();
+                rootElement.Add(childElement);
+            }
+            return rootElement;
+        }
+    }
+}

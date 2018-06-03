@@ -1,0 +1,6 @@
+Message :AddressLine1 is missing<br/>
+StackTrace :   at Logistika.Service.Common.DataAccessInterface.Config.OrderBusinessComponent.createOrder(LogistikaOrderHeader orderHeader) in C:\API\Logistika\LogistikaService\Logistika.Service.Common.BusinessComponent\Order\OrderBusinessComponent.cs:line 228
+Date :12/05/2018 15:39:21
+
+-----------------------------------------------------------------------------
+

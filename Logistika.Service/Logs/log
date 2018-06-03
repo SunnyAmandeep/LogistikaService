@@ -1,0 +1,120 @@
+2017-05-09 16:56:49,252 [17] INFO  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 16:56:49,274 [17] ERROR Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 16:56:49,275 [17] WARN  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 16:57:30,260 [19] INFO  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 16:57:31,226 [19] ERROR Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 16:57:34,833 [19] WARN  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:01:03,551 [28] INFO  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:01:03,558 [28] ERROR Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:01:03,558 [28] WARN  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:06:05,527 [21] INFO  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:06:05,528 [21] ERROR Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:06:05,528 [21] WARN  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:06:39,921 [35] INFO  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:06:39,922 [35] ERROR Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+
+2017-05-09 17:06:39,922 [35] WARN  Logistika.Service.Controllers.LoggerController [(null)] - Source:KfisPoralJS
+User:kfis
+URL:http://localhost/KfisPortalv2/Scripts/App/manageOrder.js
+Error:Test Error
+Message:Line:1936,Column:5-
+Uncaught Test Error
+AddtionaInfo:http://localhost/KfisPortalv2/Order/Manage?OrderId=KFIS000025-00000624
+

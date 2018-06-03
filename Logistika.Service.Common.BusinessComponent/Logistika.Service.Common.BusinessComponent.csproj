@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BFD5F49C-94A9-461D-8568-AB2E9A3D0458}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Logistika.Service.Common.BusinessComponent</RootNamespace>
+    <AssemblyName>Logistika.Service.Common.BusinessComponent</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Lookup\LookupBusinessComponent.cs" />
+    <Compile Include="Logger\LoggerBusinessComponent.cs" />
+    <Compile Include="Notification\NotificationBusinessComponent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Order\OrderBusinessComponent.cs" />
+    <Compile Include="User\UserBusinessComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logistika.Service.Common.BusinessComponentInterface\Logistika.Service.Common.BusinessComponentInterface.csproj">
+      <Project>{5b6454a0-8779-4bac-87dc-9ea5b3b7828e}</Project>
+      <Name>Logistika.Service.Common.BusinessComponentInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistika.Service.Common.DataAccessInterface\Logistika.Service.Common.DataAccessInterface.csproj">
+      <Project>{24b0dcbd-8da5-427e-a9c2-66a17a6e6acb}</Project>
+      <Name>Logistika.Service.Common.DataAccessInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistika.Service.Common.DataAccess\Logistika.Service.Common.DataAccess.csproj">
+      <Project>{F6711200-D480-40FC-A8E0-7D5BC9D88F43}</Project>
+      <Name>Logistika.Service.Common.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistika.Service.Common.Entities\Logistika.Service.Common.Entities.csproj">
+      <Project>{b4571bd8-a084-4df6-af82-4e9f502e13ec}</Project>
+      <Name>Logistika.Service.Common.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistika.Service.Common\Logistika.Service.Common.csproj">
+      <Project>{eace7539-305a-4471-962e-76074fdf10ad}</Project>
+      <Name>Logistika.Service.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

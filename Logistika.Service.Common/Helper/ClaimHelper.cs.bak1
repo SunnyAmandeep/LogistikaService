@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+
+namespace Logistika.Service.Common.Helper
+{
+    public static class ClaimHelper
+    {
+        public static string UserName
+        {
+            get
+            {
+                var name = GetClaim("Name");
+                if (string.IsNullOrEmpty(name))
+                {
+                    return "LogistikaAppUser";//name = GetClaim("sub");
+                }
+                return name;
+            }
+        }
+        public static string CompanyId
+        {
+            get
+            {
+                var id = GetClaim("CompanyId");
+                if (SiteConfigurationManager.GetAppSettingKey("Environment") == "Test")
+                {
+                    if (string.IsNullOrEmpty(id))
+                    {
+                        return "2";
+                    }
+                }
+                return id;
+            }
+        }
+        private static string GetClaim(string Key)
+        {
+            try { return ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(x => x.Type == Key).Value; }
+            catch { }
+            return string.Empty;
+        }
+    }
+}

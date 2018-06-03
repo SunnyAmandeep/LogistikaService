@@ -1,0 +1,37 @@
+
+using Logistika.Service.Common.Entities;
+using Logistika.Service.Common.Entities.Menu;
+using System.Collections.Generic;
+
+namespace Logistika.Service.Common.BusinessComponentInterface.User
+{
+    public interface IUserBusinessComponent
+    {
+        //IList<CompanyAddress> getCompanyAddressListSingle(int CompanyID);
+        FrameworkUser AuthenticateUser(string UserName, string Password);
+        IList<MenuBar> getMenuItem(string UserName, string Password);
+        //IList<OrderDriverInfo> getOrderDriverInfo(string StartDt, string EndDt);
+        IList<StatusList> getStatusList();
+        IList<UserStats> getUserStats(int CompanyID, string UserType, string StartDt, string EndDt);
+        IList<CompanyAddress> getCompanyAddressList(int CompanyID, int FrameworkAddressID);
+        IList<FrameworkUser> getUserList(string UserName);
+        IList<ItemList> getItemList(string Type);
+        IList<GeoLocation> getGeoLocation(int CompanyID);
+        AuthUser AuthorizeUser(string UserName, string Password);
+        string AddUpdateCompany(string CompanyName, string TaxIdentification, int IsActive, string AuthCode);
+        string SaveFrameworkUser(string UserName, string Password, string FirstName, string MiddleName, string LastName, string PrimaryEmail, string PrimaryPhone, string PrimaryFax, int FrameworkApplicationUserType_FK, int Company_FK, IList<Address> myAddress);
+        IList<Fleet> getFleetMaster(string Make, string Model);
+        
+        string InsUpdFleetinfo(Fleet myfleet);
+        IList<EmployeePlanner> GetEmployeePlannerList(int CompanyID, int CompanyAddressID, string LastModifiedBy, char Operation);
+
+        IList<string> GetUserRoles(string UserId);
+        IList<MenuItem> GetUserMenu(string UserId, string Type = "NESTED");
+        IList<Entities.Menu.MenuItem> GetAllUserMenu(string Type = "NESTED");
+        IList<GroupUser> GetUserGroup(int? GroupId);
+        bool CheckRestrictedServiceAuthorization(string UserName, string Url, string OprationCode, string ScreenCode = "MVC_KFISPORTAL");
+        KfisUser GetKfisUser(string UserName);
+        KfisUser GetAdUser(string UserName);
+        string SaveUser(KfisUser User);
+    }
+}

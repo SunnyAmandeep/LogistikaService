@@ -1,0 +1,47 @@
+{
+    "SourceServer": "KFISSQL-DEV",
+    "ConnectionString": "Data Source=KFISSQL-DEV.lkw.jknipper.com,8745;Initial Catalog=KFIS;user id=kfis;password=kfisdev;",
+    "DestinationServers": [
+        {
+            "Server": "KFISSQL-DEV",
+            "Database": "KFIS",
+            "ConnectionString": "Data Source=KFISSQL-DEV.lkw.jknipper.com,8745;Initial Catalog=KFIS;user id=kfis;password=kfisdev;",
+            "Tables": [
+                {
+                    "TableName": "DIVISION",
+                    "Sequence": "2",
+                    "PK": [ "Division_PK" ],
+                    "Columns": [ "Client_FK", "Name", "StatusDt", "LeftImagePath", "RightImagePath", "AccessURL", "WebSite", "Status_FK" ]
+
+                },
+                {
+                    "TableName": "CLIENT_BKP",
+                    "Sequence": "1",
+                    "PK": [ "Client_PK" ],
+                    "Columns": [ "BillingID","Name","PMSID","OMSID","WMSID","TMSID","Status_FK","Website","AccessURL","LeftImagePath","RightImagePath","DataEntryImageFileDropPath","Comments","StatusDt","CreatedBy","CreatedDt","ModifiedBy","ModifiedDt","Sysuser","SysDt","AuditAction" ]
+                }
+            ]
+        },
+        {
+            "Server": "KFISSQL-UAT",
+            "Database": "KFIS",
+            "ConnectionString": "Data Source=KFISSQL-UAT.lkw.jknipper.com,8745;Initial Catalog=KFIS;user id=kfispassword=kfis;",
+            "Tables": [
+                {
+                    "TableName": "DIVISION",
+                    "Sequence": "2",
+                    "PK": [ "Division_PK" ],
+                    "Columns": [ "Client_FK", "Name", "StatusDt", "LeftImagePath", "RightImagePath", "AccessURL", "WebSite", "Status_FK" ]
+
+                },
+                {
+                    "TableName": "CLIENT",
+                    "Sequence": "2",
+                    "PK": [ "Client_PK" ],
+                    "Columns": [ "BillingID", "Name", "PMSID", "OMSID", "WMSID", "TMSID", "Status_FK", "Website", "AccessURL", "LeftImagePath", "RightImagePath", "DataEntryImageFileDropPath", "Comments" ]
+                }
+            ]
+        }
+    ]
+
+}
